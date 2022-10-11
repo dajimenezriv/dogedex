@@ -7,5 +7,19 @@
     <string name="male">Male</string>
     <string name="dog_index_format">#%d</string>
     <string name="dog_life_expectancy_format">%s years</string>
+
     <string name="error_showing_dog_not_found">Error showing dog, dog not found</string>
+    <string name="error_unknown_host_exception">"There is no internet connection"</string>
+    <string name="error_unknown_error">Unknown error</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="do_not_have_an_account">Do not have an account?</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email_is_not_valid">Email is not valid</string>
+    <string name="password_is_not_valid">Password is not valid</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
 </resources>
