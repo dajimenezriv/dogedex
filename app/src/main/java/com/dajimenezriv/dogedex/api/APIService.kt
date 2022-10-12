@@ -1,9 +1,10 @@
 package com.dajimenezriv.dogedex.api
 
 import com.dajimenezriv.dogedex.BASE_URL
+import com.dajimenezriv.dogedex.api.dto.LoginDTO
 import com.dajimenezriv.dogedex.api.dto.SignUpDTO
 import com.dajimenezriv.dogedex.api.responses.DogListAPIResponse
-import com.dajimenezriv.dogedex.api.responses.SignUpAPIResponse
+import com.dajimenezriv.dogedex.api.responses.AuthAPIResponse
 import retrofit2.Retrofit
 // parse json in an object that we can use
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -33,7 +34,10 @@ interface APIService {
     suspend fun getAllDogs(): DogListAPIResponse
 
     @POST("sign_up")
-    suspend fun signUp(@Body signUpDTO: SignUpDTO): SignUpAPIResponse
+    suspend fun signUp(@Body signUpDTO: SignUpDTO): AuthAPIResponse
+
+    @POST("sign_in")
+    suspend fun login(@Body loginDTO: LoginDTO): AuthAPIResponse
 }
 
 // this is the way with retrofit

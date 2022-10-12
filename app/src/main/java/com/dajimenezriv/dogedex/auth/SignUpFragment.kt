@@ -16,6 +16,7 @@ class SignUpFragment : Fragment() {
     }
 
     private lateinit var signUpFragmentActions: SignUpFragmentActions
+    private lateinit var binding: FragmentSignUpBinding
 
     // when this fragment joins the activity, the activity sends a context to the fragment
     // so, with that context, we can use the methods of the interface anywhere in the fragment??
@@ -28,8 +29,6 @@ class SignUpFragment : Fragment() {
             throw ClassCastException("$context must implement SignUpFragmentActions")
         }
     }
-
-    private lateinit var binding: FragmentSignUpBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

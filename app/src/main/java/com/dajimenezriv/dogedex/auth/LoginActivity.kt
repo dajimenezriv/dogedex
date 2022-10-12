@@ -64,6 +64,10 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
             .navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
     }
 
+    override fun onLoginFieldsValidated(email: String, password: String) {
+        viewModel.login(email, password);
+    }
+
     override fun onSignUpFieldsValidated(email: String, password: String, confirmPassword: String) {
         // it's going to call the method in our ViewModel (signUp)
         viewModel.signUp(email, password, confirmPassword)
