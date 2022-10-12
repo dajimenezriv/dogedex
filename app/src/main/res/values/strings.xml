@@ -29,4 +29,8 @@
     <string name="testing_mail">testing@gmail.com</string>
     <string name="testing_password">testing</string>
     <string name="wrong_user_or_password">Wrong user or password</string>
+    <string name="dogs_list">dogs_list</string>
+    <string name="camera">camera</string>
+    <string name="settings">settings</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -22,6 +22,7 @@ data class User(
             }
         }
 
+        // get session
         fun getLoggedInUser(activity: Activity): User? {
             // if the user is null, then the session is not initialized
             // if prefs doesn't exist, user doesn't exist, return null then
@@ -36,6 +37,13 @@ data class User(
                 prefs.getString("email", "") ?: "",
                 prefs.getString("authenticationToken", "") ?: "",
             )
+        }
+
+        // destroy session
+        fun destroyLoggedInUser(activity: Activity) {
+            activity.getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE).also {
+                it.edit().clear().apply()
+            }
         }
     }
 }
