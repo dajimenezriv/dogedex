@@ -1,6 +1,6 @@
 package com.dajimenezriv.dogedex.doglist
 
-import com.dajimenezriv.dogedex.Dog
+import com.dajimenezriv.dogedex.models.Dog
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.api.DogsAPI.retrofitService
 import com.dajimenezriv.dogedex.api.dto.DogDTOMapper

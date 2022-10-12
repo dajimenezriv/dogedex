@@ -1,11 +1,15 @@
 package com.dajimenezriv.dogedex.api
 
 import com.dajimenezriv.dogedex.BASE_URL
+import com.dajimenezriv.dogedex.api.dto.SignUpDTO
 import com.dajimenezriv.dogedex.api.responses.DogListAPIResponse
+import com.dajimenezriv.dogedex.api.responses.SignUpAPIResponse
 import retrofit2.Retrofit
 // parse json in an object that we can use
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
@@ -27,6 +31,9 @@ interface APIService {
      */
     @GET("dogs")
     suspend fun getAllDogs(): DogListAPIResponse
+
+    @POST("sign_up")
+    suspend fun signUp(@Body signUpDTO: SignUpDTO): SignUpAPIResponse
 }
 
 // this is the way with retrofit

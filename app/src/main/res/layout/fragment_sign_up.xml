@@ -23,6 +23,7 @@
             android:layout_marginEnd="16dp">
 
             <EditText
+                android:text="testing@mail.com"
                 android:id="@+id/email_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
             android:layout_marginEnd="16dp">
 
             <EditText
+                android:text="testing"
                 android:id="@+id/password_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,6 +57,7 @@
             android:layout_margin="16dp">
 
             <EditText
+                android:text="testing"
                 android:id="@+id/confirm_password_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

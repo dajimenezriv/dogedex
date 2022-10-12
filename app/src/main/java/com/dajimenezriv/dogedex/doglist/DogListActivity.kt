@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dajimenezriv.dogedex.Dog
+import com.dajimenezriv.dogedex.models.Dog
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.databinding.ActivityDogListBinding
 import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity
@@ -19,14 +19,14 @@ private const val GRID_SPAN_COUNT = 3
 class DogListActivity : AppCompatActivity() {
     // this is the way to instantiate a view model
     // instead of dogListViewModel = DogListViewModel()
-    private val dogListViewModel: DogListViewModel by viewModels()
+    private val viewModel: DogListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityDogListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val loadingDogs = binding.loadingDogs
+        val loadingWheel = binding.loadingWheel
 
         val recycler = binding.dogRecycler
         val adapter = DogAdapter()
@@ -41,23 +41,23 @@ class DogListActivity : AppCompatActivity() {
         recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
         recycler.adapter = adapter
 
-        dogListViewModel.dogs.observe(this, Observer<List<Dog>> { dogs ->
+        viewModel.dogs.observe(this, Observer<List<Dog>> { dogs ->
             adapter.submitList(dogs)
         })
 
-        dogListViewModel.status.observe(this) { status ->
-            when(status) {
+        viewModel.status.observe(this) { status ->
+            when (status) {
                 is APIResponseStatus.Error -> {
-                    loadingDogs.visibility = View.GONE
+                    loadingWheel.visibility = View.GONE
                     Toast.makeText(this, status.messageId, Toast.LENGTH_SHORT).show()
                 }
                 is APIResponseStatus.Loading -> {
                     // show progress bar
-                    loadingDogs.visibility = View.VISIBLE
+                    loadingWheel.visibility = View.VISIBLE
                 }
                 is APIResponseStatus.Success -> {
                     // hide progress bar
-                    loadingDogs.visibility = View.GONE
+                    loadingWheel.visibility = View.GONE
                 }
             }
         }
