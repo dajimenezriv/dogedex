@@ -12,6 +12,7 @@ import com.dajimenezriv.dogedex.MainActivity
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.databinding.ActivityLoginBinding
+import com.dajimenezriv.dogedex.models.User
 
 class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
     SignUpFragment.SignUpFragmentActions {
@@ -45,7 +46,10 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
         // when we start the ViewModel, the user starts being null
         viewModel.user.observe(this) { user ->
             if (user != null) {
+                // save session
+                User.setLoggedInUser(this, user);
                 startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
         }
     }
