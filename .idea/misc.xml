@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/drawable-v24/dog_list_item_background.xml" value="0.2265" />
+        <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/drawable-v24/dog_list_item_empty.xml" value="0.2265" />
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/drawable/detail_info_background.xml" value="0.124" />
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/drawable/red_circle.xml" value="0.2265" />
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/layout/activity_dog_detail.xml" value="0.22826086956521738" />
@@ -12,6 +13,7 @@
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/layout/activity_settings.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/layout/dog_list_item.xml" value="0.2076923076923077" />
+        <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/layout/dog_list_item_empty.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Windows/Documents/projects/dogedex/app/src/main/res/layout/fragment_sign_up.xml" value="0.11302083333333333" />
       </map>
     </option>

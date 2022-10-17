@@ -12,28 +12,55 @@ class DogListViewModel : ViewModel() {
     private val _dogs = MutableLiveData<List<Dog>>()
     val dogs: LiveData<List<Dog>> get() = _dogs
 
-    private val _status = MutableLiveData<APIResponseStatus<List<Dog>>>()
-    val status: LiveData<APIResponseStatus<List<Dog>>> get() = _status
+    private val _status = MutableLiveData<APIResponseStatus<Any>>()
+    val status: LiveData<APIResponseStatus<Any>> get() = _status
 
     private val dogRepository = DogRepository()
 
     init {
-        downloadDogs()
+        getDogCollection()
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun getDogCollection() {
+        viewModelScope.launch {
+            _status.value = APIResponseStatus.Loading()
+            val apiResponseStatus = dogRepository.getDogCollection()
+            if (apiResponseStatus is APIResponseStatus.Success)
+                _dogs.value = apiResponseStatus.data
+            _status.value = apiResponseStatus as APIResponseStatus<Any>
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     private fun downloadDogs() {
         // to download data from internet we need to use coroutines
         viewModelScope.launch {
             _status.value = APIResponseStatus.Loading()
-            handleResponseStatus(dogRepository.downloadDogs())
+            val apiResponseStatus = dogRepository.downloadDogs()
+            if (apiResponseStatus is APIResponseStatus.Success)
+                _dogs.value = apiResponseStatus.data
+            _status.value = apiResponseStatus as APIResponseStatus<Any>
         }
     }
 
-    private fun handleResponseStatus(apiResponseStatus: APIResponseStatus<List<Dog>>) {
-        if (apiResponseStatus is APIResponseStatus.Success) {
-            _dogs.value = apiResponseStatus.data
+    @Suppress("UNCHECKED_CAST")
+    private fun getUserDogs() {
+        viewModelScope.launch {
+            _status.value = APIResponseStatus.Loading()
+            val apiResponseStatus = dogRepository.getUserDogs()
+            if (apiResponseStatus is APIResponseStatus.Success)
+                _dogs.value = apiResponseStatus.data
+            _status.value = apiResponseStatus as APIResponseStatus<Any>
         }
+    }
 
-        _status.value = apiResponseStatus
+    fun addDogToUser(dogId: Long) {
+        viewModelScope.launch {
+            _status.value = APIResponseStatus.Loading()
+            val apiResponseStatus = dogRepository.addDogToUser(dogId)
+            if (apiResponseStatus is APIResponseStatus.Success) getDogCollection()
+            _status.value = apiResponseStatus
+        }
     }
 }

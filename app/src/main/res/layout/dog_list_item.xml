@@ -3,7 +3,8 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <RelativeLayout
             android:id="@+id/dog_list_item_layout"
@@ -17,6 +18,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/dog_index"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:padding="16dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_centerInParent="true"
+                />
         </RelativeLayout>
     </FrameLayout>
 </layout>

@@ -3,8 +3,10 @@ package com.dajimenezriv.dogedex
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.dajimenezriv.dogedex.api.APIServiceInterceptor
 import com.dajimenezriv.dogedex.auth.LoginActivity
 import com.dajimenezriv.dogedex.databinding.ActivityMainBinding
+import com.dajimenezriv.dogedex.doglist.DogListActivity
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
 
@@ -21,8 +23,14 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        APIServiceInterceptor.setSessionToken(user.authenticationToken)
+
         binding.settingsFab.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        binding.dogListFab.setOnClickListener {
+            startActivity(Intent(this, DogListActivity::class.java))
         }
     }
 }

@@ -28,6 +28,7 @@ suspend fun <T> makeNetworkCall(callback: suspend () -> T): APIResponseStatus<T>
                     "sign_up_error" -> R.string.error_sign_up
                     "sign_in_error" -> R.string.error_sign_in
                     "user_already_exists" -> R.string.user_already_exists
+                    "error_adding_dog" -> R.string.error_adding_dog
                     else -> R.string.error_unknown_error
                 }
             )

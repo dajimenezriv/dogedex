@@ -38,6 +38,10 @@ class DogListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        adapter.setOnLongItemClickListener {
+            viewModel.addDogToUser(it.id)
+        }
+
         recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
         recycler.adapter = adapter
 
