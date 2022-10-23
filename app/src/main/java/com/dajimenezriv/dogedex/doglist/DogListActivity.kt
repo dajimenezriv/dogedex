@@ -26,8 +26,6 @@ class DogListActivity : AppCompatActivity() {
         val binding = ActivityDogListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val loadingWheel = binding.loadingWheel
-
         val recycler = binding.dogRecycler
         val adapter = DogAdapter()
 
@@ -36,10 +34,6 @@ class DogListActivity : AppCompatActivity() {
             val intent = Intent(this, DogDetailActivity::class.java)
             intent.putExtra(DOG_KEY, it)
             startActivity(intent)
-        }
-
-        adapter.setOnLongItemClickListener {
-            viewModel.addDogToUser(it.id)
         }
 
         recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
@@ -52,16 +46,16 @@ class DogListActivity : AppCompatActivity() {
         viewModel.status.observe(this) { status ->
             when (status) {
                 is APIResponseStatus.Error -> {
-                    loadingWheel.visibility = View.GONE
+                    binding.loadingWheel.visibility = View.GONE
                     Toast.makeText(this, status.messageId, Toast.LENGTH_SHORT).show()
                 }
                 is APIResponseStatus.Loading -> {
                     // show progress bar
-                    loadingWheel.visibility = View.VISIBLE
+                    binding.loadingWheel.visibility = View.VISIBLE
                 }
                 is APIResponseStatus.Success -> {
                     // hide progress bar
-                    loadingWheel.visibility = View.GONE
+                    binding.loadingWheel.visibility = View.GONE
                 }
             }
         }

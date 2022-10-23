@@ -28,6 +28,7 @@ import com.dajimenezriv.dogedex.auth.LoginActivity
 import com.dajimenezriv.dogedex.databinding.ActivityMainBinding
 import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity
 import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity.Companion.DOG_KEY
+import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity.Companion.IS_RECOGNITION_KEY
 import com.dajimenezriv.dogedex.doglist.DogListActivity
 import com.dajimenezriv.dogedex.machinelearning.Classifier
 import com.dajimenezriv.dogedex.models.User
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity() {
             if (dog != null) {
                 val intent = Intent(this, DogDetailActivity::class.java)
                 intent.putExtra(DOG_KEY, dog)
+                intent.putExtra(IS_RECOGNITION_KEY, true)
                 startActivity(intent)
             }
         }

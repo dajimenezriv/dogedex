@@ -70,10 +70,12 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
                     R.drawable.dog_list_item_empty_background
                 )
 
+                /*
                 binding.dogListItemLayout.setOnLongClickListener {
                     onLongItemClickListener?.invoke(dog)
                     true
                 }
+                */
             }
         }
     }
