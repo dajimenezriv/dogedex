@@ -3,7 +3,7 @@ package com.dajimenezriv.dogedex.settings
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dajimenezriv.dogedex.MainActivity
+import com.dajimenezriv.dogedex.main.MainActivity
 import com.dajimenezriv.dogedex.databinding.ActivitySettingsBinding
 import com.dajimenezriv.dogedex.models.User
 

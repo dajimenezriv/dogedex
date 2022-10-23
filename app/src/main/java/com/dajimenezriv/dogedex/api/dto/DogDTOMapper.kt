@@ -3,7 +3,7 @@ package com.dajimenezriv.dogedex.api.dto
 import com.dajimenezriv.dogedex.models.Dog
 
 class DogDTOMapper {
-    private fun fromDogDTOtoDogDomain(dogDTO: DogDTO): Dog {
+    fun fromDogDTOtoDogDomain(dogDTO: DogDTO): Dog {
         return Dog(
             dogDTO.id,
             dogDTO.index,

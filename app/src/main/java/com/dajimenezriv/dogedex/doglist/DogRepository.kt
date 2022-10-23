@@ -43,7 +43,20 @@ class DogRepository {
         if (userDogList.contains(it)) {
             it
         } else {
-            Dog(it.id, it.index, "", "", "", "", "", "", "", "", "", false)
+            Dog(
+                it.id,
+                it.index,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                false,
+            )
         }
     }.sorted()
 
@@ -68,10 +81,21 @@ class DogRepository {
     suspend fun addDogToUser(dogId: Long): APIResponseStatus<Any> {
         return makeNetworkCall {
             val addDogToUserDTO = AddDogToUserDTO(dogId)
-            val defaultResponse = retrofitService.addDogToUser(addDogToUserDTO)
-            if (!defaultResponse.isSuccess) {
-                throw Exception(defaultResponse.message)
+            val response = retrofitService.addDogToUser(addDogToUserDTO)
+            if (!response.isSuccess) {
+                throw Exception(response.message)
             }
+        }
+    }
+
+    suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
+        return makeNetworkCall {
+            val response = retrofitService.getDogMyMlId(mlDogId)
+            if (!response.isSuccess) {
+                throw Exception(response.message)
+            }
+            val dogDTOMapper = DogDTOMapper()
+            dogDTOMapper.fromDogDTOtoDogDomain(response.data.dog)
         }
     }
 }

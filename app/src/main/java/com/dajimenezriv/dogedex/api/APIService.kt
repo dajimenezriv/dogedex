@@ -7,6 +7,7 @@ import com.dajimenezriv.dogedex.api.dto.SignUpDTO
 import com.dajimenezriv.dogedex.api.responses.DogListAPIResponse
 import com.dajimenezriv.dogedex.api.responses.AuthAPIResponse
 import com.dajimenezriv.dogedex.api.responses.DefaultResponse
+import com.dajimenezriv.dogedex.api.responses.DogAPIResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 // parse json in an object that we can use
@@ -54,6 +55,9 @@ interface APIService {
     @Headers("${APIServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
     @GET("get_user_dogs")
     suspend fun getUserDogs(): DogListAPIResponse
+
+    @GET("find_dog_by_ml_id")
+    suspend fun getDogMyMlId(@Query("ml_id") mlId: String): DogAPIResponse
 }
 
 // this is the way with retrofit
