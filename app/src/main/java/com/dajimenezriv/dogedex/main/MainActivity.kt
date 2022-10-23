@@ -1,14 +1,11 @@
 package com.dajimenezriv.dogedex.main
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,11 +27,9 @@ import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity
 import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity.Companion.DOG_KEY
 import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity.Companion.IS_RECOGNITION_KEY
 import com.dajimenezriv.dogedex.doglist.DogListActivity
-import com.dajimenezriv.dogedex.machinelearning.Classifier
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
 import org.tensorflow.lite.support.common.FileUtil
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -43,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var classifier: Classifier
     private var isCameraReady = false
     private val viewModel: MainViewModel by viewModels()
 
@@ -110,12 +104,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.dogRecognition.observe(this) { dogRecognition ->
+            // enable camera button
+            if (dogRecognition.confidence > 70) {
+                binding.takePhotoFab.alpha = 1f
+                binding.takePhotoFab.setOnClickListener {
+                    viewModel.getDogByMlId(dogRecognition.id)
+                }
+            } else {
+                binding.takePhotoFab.alpha = 0.2f
+                binding.takePhotoFab.setOnClickListener(null)
+            }
+        }
+
         requestCameraPermissions()
     }
 
     override fun onStart() {
         super.onStart()
-        classifier = Classifier(
+        viewModel.setupClassifier(
             FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
             FileUtil.loadLabels(this@MainActivity, LABELS_PATH)
         )
@@ -184,22 +191,9 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
-                val bitmap = convertImageProxyToBitmap(imageProxy)
-                if (bitmap != null) {
-                    val dogRecognition = classifier.recognizeImage(bitmap).first()
-                    // enable camera button
-                    if (dogRecognition.confidence > 70) {
-                        binding.takePhotoFab.alpha = 1f
-                        binding.takePhotoFab.setOnClickListener {
-                            viewModel.getDogByMlId(dogRecognition.id)
-                        }
-                    } else {
-                        binding.takePhotoFab.alpha = 0.2f
-                        binding.takePhotoFab.setOnClickListener(null)
-                    }
-                }
-
-                imageProxy.close()
+                viewModel.recognizeImage(imageProxy)
+                // we can't close the imageProxy here because it's running inside a coroutine
+                // imageProxy.close()
             }
 
             // camera to lifecycle
@@ -213,32 +207,6 @@ class MainActivity : AppCompatActivity() {
                 imageAnalysis
             )
         }, ContextCompat.getMainExecutor(this))
-    }
-
-    @SuppressLint("UnsafeOptInUsageError")
-    private fun convertImageProxyToBitmap(imageProxy: ImageProxy): Bitmap? {
-        val image = imageProxy.image ?: return null
-
-        val yBuffer = image.planes[0].buffer
-        val uBuffer = image.planes[1].buffer
-        val vBuffer = image.planes[2].buffer
-
-        val ySize = yBuffer.remaining()
-        val uSize = uBuffer.remaining()
-        val vSize = vBuffer.remaining()
-
-        val nv21 = ByteArray(ySize + uSize + vSize)
-
-        yBuffer.get(nv21, 0, ySize)
-        vBuffer.get(nv21, ySize, vSize)
-        uBuffer.get(nv21, ySize + vSize, uSize)
-
-        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.width, image.height, null)
-        val out = ByteArrayOutputStream()
-        yuvImage.compressToJpeg(Rect(0, 0, yuvImage.width, yuvImage.height), 100, out)
-        val imageBytes = out.toByteArray()
-
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
     private fun takePicture() {
