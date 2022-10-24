@@ -35,4 +35,5 @@
     <string name="logout">Logout</string>
     <string name="error_adding_dog">Error Adding Dog</string>
     <string name="error_camera_permission">You need to accept camera permission to use camera.</string>
+    <string name="title_activity_dog_detail_compose">DogDetailComposeActivity</string>
 </resources>

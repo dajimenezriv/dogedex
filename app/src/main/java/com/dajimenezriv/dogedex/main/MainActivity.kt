@@ -23,9 +23,9 @@ import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.api.APIServiceInterceptor
 import com.dajimenezriv.dogedex.auth.LoginActivity
 import com.dajimenezriv.dogedex.databinding.ActivityMainBinding
-import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity
-import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity.Companion.DOG_KEY
-import com.dajimenezriv.dogedex.dogdetail.DogDetailActivity.Companion.IS_RECOGNITION_KEY
+import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.DOG_KEY
+import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.IS_RECOGNITION_KEY
+import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity
 import com.dajimenezriv.dogedex.doglist.DogListActivity
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.dog.observe(this) { dog ->
             if (dog != null) {
-                val intent = Intent(this, DogDetailActivity::class.java)
+                val intent = Intent(this, DogDetailComposeActivity::class.java)
                 intent.putExtra(DOG_KEY, dog)
                 intent.putExtra(IS_RECOGNITION_KEY, true)
                 startActivity(intent)
@@ -227,8 +227,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    val uri = outputFileResults.savedUri
-
+                    // val uri = outputFileResults.savedUri
                     // openPicture(uri.toString())
                 }
             }

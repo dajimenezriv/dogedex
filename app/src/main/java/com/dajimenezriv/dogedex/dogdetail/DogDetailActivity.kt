@@ -43,6 +43,7 @@ class DogDetailActivity : AppCompatActivity() {
             else finish()
         }
 
+        /*
         viewModel.status.observe(this) { status ->
             when (status) {
                 is APIResponseStatus.Error -> {
@@ -60,5 +61,6 @@ class DogDetailActivity : AppCompatActivity() {
                 }
             }
         }
+        */
     }
 }
