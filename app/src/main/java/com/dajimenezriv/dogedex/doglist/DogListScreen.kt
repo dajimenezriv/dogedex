@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
+import com.dajimenezriv.dogedex.composables.BackNavigationIcon
 import com.dajimenezriv.dogedex.composables.ErrorDialog
 import com.dajimenezriv.dogedex.composables.LoadingWheel
 import com.dajimenezriv.dogedex.models.Dog
@@ -69,16 +70,6 @@ fun DogListTopBar(onClick: () -> Unit) {
         contentColor = Color.Black,
         navigationIcon = { BackNavigationIcon(onClick = onClick) }
     )
-}
-
-@Composable
-fun BackNavigationIcon(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        Icon(
-            painter = rememberVectorPainter(image = Icons.Sharp.ArrowBack),
-            contentDescription = null
-        )
-    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)

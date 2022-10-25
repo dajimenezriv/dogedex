@@ -17,6 +17,11 @@
         android:theme="@style/Theme.Dogedex"
         tools:targetApi="31">
         <activity
+            android:name=".auth.LoginComposeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login_compose"
+            android:theme="@style/Theme.Dogedex" />
+        <activity
             android:name=".doglist.DogListComposeActivity"
             android:exported="false"
             android:label="@string/title_activity_dog_list_compose"

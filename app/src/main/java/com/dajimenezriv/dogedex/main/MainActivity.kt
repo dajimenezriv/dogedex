@@ -21,7 +21,7 @@ import com.dajimenezriv.dogedex.WholePictureActivity
 import com.dajimenezriv.dogedex.WholePictureActivity.Companion.PICTURE_URI_KEY
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.api.APIServiceInterceptor
-import com.dajimenezriv.dogedex.auth.LoginActivity
+import com.dajimenezriv.dogedex.auth.LoginComposeActivity
 import com.dajimenezriv.dogedex.databinding.ActivityMainBinding
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.DOG_KEY
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.IS_RECOGNITION_KEY
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         val user = User.getLoggedInUser(this)
         if (user == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, LoginComposeActivity::class.java))
             finish()
             return
         }

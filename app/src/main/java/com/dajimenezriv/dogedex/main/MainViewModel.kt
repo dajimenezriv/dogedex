@@ -42,7 +42,7 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch {
             val apiResponseStatus = dogRepository.getDogByMlId(mlDogId)
             if (apiResponseStatus is APIResponseStatus.Success) {
-                _dog.value = apiResponseStatus.data!!
+                _dog.value = apiResponseStatus.data
             }
             _status.value = apiResponseStatus
         }
