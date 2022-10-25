@@ -9,10 +9,10 @@ import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.doglist.DogRepository
 import kotlinx.coroutines.launch
 
-class DogDetailViewModel: ViewModel() {
+class DogDetailViewModel : ViewModel() {
     // private val _status = MutableLiveData<APIResponseStatus<Any>>()
     // val status: LiveData<APIResponseStatus<Any>> get() = _status
-    var status = mutableStateOf<APIResponseStatus<Any>?>(APIResponseStatus.Loading())
+    var status = mutableStateOf<APIResponseStatus<Any>?>(null)
         private set
 
     private val dogRepository = DogRepository()
@@ -23,5 +23,9 @@ class DogDetailViewModel: ViewModel() {
             val apiResponseStatus = dogRepository.addDogToUser(dogId)
             status.value = apiResponseStatus
         }
+    }
+
+    fun resetAPIResponseStatus() {
+        status.value = null
     }
 }

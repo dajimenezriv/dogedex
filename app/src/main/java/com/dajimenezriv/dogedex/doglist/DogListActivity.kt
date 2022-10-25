@@ -37,6 +37,7 @@ class DogListActivity : AppCompatActivity() {
         recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
         recycler.adapter = adapter
 
+        /*
         viewModel.dogs.observe(this) { dogs ->
             adapter.submitList(dogs)
         }
@@ -57,5 +58,6 @@ class DogListActivity : AppCompatActivity() {
                 }
             }
         }
+        */
     }
 }

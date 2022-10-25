@@ -6,7 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.dajimenezriv.dogedex.R
+import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.dogdetail.ui.theme.DogedexTheme
+import com.dajimenezriv.dogedex.machinelearning.DogRecognition
 import com.dajimenezriv.dogedex.models.Dog
 
 class DogDetailComposeActivity : ComponentActivity() {
@@ -21,7 +23,7 @@ class DogDetailComposeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val dog = intent?.extras?.getParcelable<Dog>(DOG_KEY)
-        val isRecognition = intent?.extras?.g etBoolean(IS_RECOGNITION_KEY, false) ?: false
+        val isRecognition = intent?.extras?.getBoolean(IS_RECOGNITION_KEY, false) ?: false
 
         if (dog == null) {
             Toast.makeText(this, R.string.error_showing_dog_not_found, Toast.LENGTH_SHORT).show()
@@ -30,9 +32,25 @@ class DogDetailComposeActivity : ComponentActivity() {
         }
 
         setContent {
-            DogedexTheme {
-                DogDetailScreen(dog = dog, viewModel.status.value)
+            // when we add a dog to our collection (when we execute the bottom onClick function)
+            // after the viewModel saves the dog, the viewModel status changes to Success
+            val status = viewModel.status
+            if (status.value is APIResponseStatus.Success) finish()
+            else {
+                DogedexTheme {
+                    DogDetailScreen(
+                        dog = dog,
+                        status = status.value,
+                        onFloatButtonClick = { onClick(dog.id, isRecognition) },
+                        onDialogDismiss = { viewModel.resetAPIResponseStatus()}
+                    )
+                }
             }
         }
+    }
+
+    private fun onClick(dogId: Long, isRecognition: Boolean) {
+        if (isRecognition) viewModel.addDogToUser(dogId)
+        else finish()
     }
 }

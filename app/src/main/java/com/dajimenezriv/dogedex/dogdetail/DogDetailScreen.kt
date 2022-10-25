@@ -23,10 +23,17 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
+import com.dajimenezriv.dogedex.composables.ErrorDialog
+import com.dajimenezriv.dogedex.composables.LoadingWheel
 import com.dajimenezriv.dogedex.models.Dog
 
 @Composable
-fun DogDetailScreen(dog: Dog, status: APIResponseStatus<Any>? = null) {
+fun DogDetailScreen(
+    dog: Dog,
+    status: APIResponseStatus<Any>? = null,
+    onFloatButtonClick: () -> Unit,
+    onDialogDismiss: () -> Unit
+) {
     // it`s like a frame layout
     Box(
         modifier = Modifier
@@ -47,22 +54,18 @@ fun DogDetailScreen(dog: Dog, status: APIResponseStatus<Any>? = null) {
             modifier = Modifier
                 .align(alignment = Alignment.BottomCenter)
                 .padding(bottom = 20.dp),
-            onClick = { }) {
+            onClick = onFloatButtonClick
+        ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = null)
         }
-        if (status is APIResponseStatus.Loading) LoadingWheel()
-    }
-}
 
-@Composable
-fun LoadingWheel() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            color = Color.Red
-        )
+        if (status is APIResponseStatus.Loading) LoadingWheel()
+        else if (status is APIResponseStatus.Error) {
+            ErrorDialog(
+                messageId = status.messageId,
+                onDialogDismiss = onDialogDismiss
+            )
+        }
     }
 }
 
@@ -299,5 +302,5 @@ fun DogDetailScreenPreview() {
         "6",
     )
 
-    DogDetailScreen(dog)
+    DogDetailScreen(dog, onFloatButtonClick = { }, onDialogDismiss = {})
 }

@@ -26,7 +26,7 @@ import com.dajimenezriv.dogedex.databinding.ActivityMainBinding
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.DOG_KEY
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.IS_RECOGNITION_KEY
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity
-import com.dajimenezriv.dogedex.doglist.DogListActivity
+import com.dajimenezriv.dogedex.doglist.DogListComposeActivity
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
 import org.tensorflow.lite.support.common.FileUtil
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         APIServiceInterceptor.setSessionToken(user.authenticationToken)
 
         binding.dogListFab.setOnClickListener {
-            startActivity(Intent(this, DogListActivity::class.java))
+            startActivity(Intent(this, DogListComposeActivity::class.java))
         }
 
         binding.settingsFab.setOnClickListener {
