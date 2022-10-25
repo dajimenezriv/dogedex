@@ -20,7 +20,7 @@ class LoginComposeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DogedexTheme {
-                SignUpScreen(onNavigationIconClick = {})
+                AuthScreen()
             }
         }
     }

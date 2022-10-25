@@ -20,7 +20,7 @@ import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 
 @Composable
-fun LoginScreen(status: APIResponseStatus<Any>? = null) {
+fun LoginScreen(status: APIResponseStatus<Any>? = null, onRegisterButtonClick: () -> Unit) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
@@ -68,7 +68,7 @@ fun LoginScreen(status: APIResponseStatus<Any>? = null) {
 
                 Text(
                     modifier = Modifier
-                        .clickable(enabled = true, onClick = { })
+                        .clickable(enabled = true, onClick = { onRegisterButtonClick() })
                         .fillMaxWidth()
                         .padding(16.dp),
                     text = stringResource(id = R.string.sign_up),
