@@ -3,18 +3,29 @@ package com.dajimenezriv.dogedex.doglist
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.models.Dog
 import com.dajimenezriv.dogedex.api.APIResponseStatus
-import com.dajimenezriv.dogedex.api.DogsAPI.retrofitService
+import com.dajimenezriv.dogedex.api.APIService
 import com.dajimenezriv.dogedex.api.dto.AddDogToUserDTO
 import com.dajimenezriv.dogedex.api.dto.DogDTOMapper
 import com.dajimenezriv.dogedex.api.makeNetworkCall
-import kotlinx.coroutines.Dispatchers
+import com.dajimenezriv.dogedex.di.IODispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import javax.inject.Inject
 
-class DogRepository {
-    suspend fun getDogCollection(): APIResponseStatus<List<Dog>> {
-        return withContext(Dispatchers.IO) {
+interface DogRepositoryInterface {
+    suspend fun getDogCollection(): APIResponseStatus<List<Dog>>
+    suspend fun addDogToUser(dogId: Long): APIResponseStatus<Any>
+    suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog>
+}
+
+class DogRepository @Inject constructor(
+    private val apiService: APIService,
+    @IODispatcher private val dispatcher: CoroutineDispatcher
+) : DogRepositoryInterface {
+    override suspend fun getDogCollection(): APIResponseStatus<List<Dog>> {
+        return withContext(dispatcher) {
             val allDogsListDeferred = async { downloadDogs() }
             val userDogsListDeferred = async { getUserDogs() }
 
@@ -62,7 +73,7 @@ class DogRepository {
 
     suspend fun downloadDogs(): APIResponseStatus<List<Dog>> {
         return makeNetworkCall {
-            val dogListAPIResponse = retrofitService.getAllDogs()
+            val dogListAPIResponse = apiService.getAllDogs()
             val dogDTOList = dogListAPIResponse.data.dogs
             val dogDTOMapper = DogDTOMapper()
             dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
@@ -71,26 +82,26 @@ class DogRepository {
 
     suspend fun getUserDogs(): APIResponseStatus<List<Dog>> {
         return makeNetworkCall {
-            val dogListAPIResponse = retrofitService.getUserDogs()
+            val dogListAPIResponse = apiService.getUserDogs()
             val dogDTOList = dogListAPIResponse.data.dogs
             val dogDTOMapper = DogDTOMapper()
             dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
         }
     }
 
-    suspend fun addDogToUser(dogId: Long): APIResponseStatus<Any> {
+    override suspend fun addDogToUser(dogId: Long): APIResponseStatus<Any> {
         return makeNetworkCall {
             val addDogToUserDTO = AddDogToUserDTO(dogId)
-            val response = retrofitService.addDogToUser(addDogToUserDTO)
+            val response = apiService.addDogToUser(addDogToUserDTO)
             if (!response.isSuccess) {
                 throw Exception(response.message)
             }
         }
     }
 
-    suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
+    override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
         return makeNetworkCall {
-            val response = retrofitService.getDogMyMlId(mlDogId)
+            val response = apiService.getDogMyMlId(mlDogId)
             if (!response.isSuccess) {
                 throw Exception(response.message)
             }

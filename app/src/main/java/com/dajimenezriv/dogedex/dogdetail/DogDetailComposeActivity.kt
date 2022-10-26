@@ -10,13 +10,16 @@ import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.dogdetail.ui.theme.DogedexTheme
 import com.dajimenezriv.dogedex.machinelearning.DogRecognition
 import com.dajimenezriv.dogedex.models.Dog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DogDetailComposeActivity : ComponentActivity() {
     companion object {
         const val DOG_KEY = "dog"
         const val IS_RECOGNITION_KEY = "is_recognition"
     }
 
+    // hilt is recognizing this as an injection too
     private val viewModel: DogDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

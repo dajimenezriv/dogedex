@@ -7,9 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dajimenezriv.dogedex.models.Dog
 import com.dajimenezriv.dogedex.api.APIResponseStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DogListViewModel : ViewModel() {
+@HiltViewModel
+// hilt knows that he has to inject a viewModel with an empty constructor
+class DogListViewModel @Inject constructor(
+    private val dogRepository: DogRepositoryInterface,
+): ViewModel() {
     // private val _dogs = MutableLiveData<List<Dog>>()
     // val dogs: LiveData<List<Dog>> get() = _dogs
 
@@ -21,8 +27,6 @@ class DogListViewModel : ViewModel() {
 
     var status = mutableStateOf<APIResponseStatus<Any>?>(null)
         private set
-
-    private val dogRepository = DogRepository()
 
     init {
         getDogCollection()
@@ -37,29 +41,6 @@ class DogListViewModel : ViewModel() {
         viewModelScope.launch {
             status.value = APIResponseStatus.Loading()
             val apiResponseStatus = dogRepository.getDogCollection()
-            if (apiResponseStatus is APIResponseStatus.Success)
-                dogs.value = apiResponseStatus.data
-            status.value = apiResponseStatus as APIResponseStatus<Any>
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun downloadDogs() {
-        // to download data from internet we need to use coroutines
-        viewModelScope.launch {
-            status.value = APIResponseStatus.Loading()
-            val apiResponseStatus = dogRepository.downloadDogs()
-            if (apiResponseStatus is APIResponseStatus.Success)
-                dogs.value = apiResponseStatus.data
-            status.value = apiResponseStatus as APIResponseStatus<Any>
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getUserDogs() {
-        viewModelScope.launch {
-            status.value = APIResponseStatus.Loading()
-            val apiResponseStatus = dogRepository.getUserDogs()
             if (apiResponseStatus is APIResponseStatus.Success)
                 dogs.value = apiResponseStatus.data
             status.value = apiResponseStatus as APIResponseStatus<Any>

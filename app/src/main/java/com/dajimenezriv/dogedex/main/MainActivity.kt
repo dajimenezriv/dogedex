@@ -29,11 +29,13 @@ import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity
 import com.dajimenezriv.dogedex.doglist.DogListComposeActivity
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.tensorflow.lite.support.common.FileUtil
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var imageCapture: ImageCapture

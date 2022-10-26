@@ -11,17 +11,15 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
@@ -34,19 +32,21 @@ private const val GRID_COLS_COUNT = 3
 
 @Composable
 fun DogListScreen(
-    dogList: List<Dog>,
-    status: APIResponseStatus<Any>? = null,
     onNavigationIconClick: () -> Unit,
     onDogClicked: (Dog) -> Unit,
-    onDialogDismiss: () -> Unit,
+    // here, hilt goes to DogListViewModel and injects the viewModel using the provided constructor there
+    viewModel: DogListViewModel = hiltViewModel()
 ) {
+    val status = viewModel.status.value
+    val dogs = viewModel.dogs.value
+
     Scaffold(
         topBar = { DogListTopBar(onNavigationIconClick) },
         content = { padding ->
             LazyVerticalGrid(
                 modifier = Modifier.padding(padding),
                 columns = GridCells.Fixed(GRID_COLS_COUNT), content = {
-                    items(dogList) {
+                    items(dogs) {
                         DogGridItem(dog = it, onDogClicked = onDogClicked)
                     }
                 })
@@ -57,7 +57,7 @@ fun DogListScreen(
     else if (status is APIResponseStatus.Error) {
         ErrorDialog(
             messageId = status.messageId,
-            onDialogDismiss = onDialogDismiss
+            onDialogDismiss = { viewModel.resetAPIResponseStatus() }
         )
     }
 }

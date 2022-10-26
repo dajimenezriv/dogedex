@@ -16,22 +16,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.dajimenezriv.dogedex.auth.ui.theme.DogedexTheme
 import com.dajimenezriv.dogedex.main.MainActivity
 import com.dajimenezriv.dogedex.models.User
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginComposeActivity : ComponentActivity() {
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val user = viewModel.user.value
-
-        if (user != null) {
-            User.setLoggedInUser(this, user);
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-
+        // we only refresh the parts that are inside setContent
         setContent {
+            val user = viewModel.user.value
+
+            if (user != null) {
+                User.setLoggedInUser(this, user);
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+
             DogedexTheme {
                 AuthScreen(
                     viewModel = viewModel,

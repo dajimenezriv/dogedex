@@ -9,9 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.models.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthRepositoryInterface
+) : ViewModel() {
     // private val _user = MutableLiveData<User>()
     // val user: LiveData<User> get() = _user
 
@@ -33,8 +38,6 @@ class AuthViewModel : ViewModel() {
 
     var status = mutableStateOf<APIResponseStatus<User>?>(null)
         private set
-
-    private val authRepository = AuthRepository()
 
     fun resetAPIResponseStatus() {
         status.value = null
@@ -77,7 +80,7 @@ class AuthViewModel : ViewModel() {
     fun logIn(email: String, password: String) {
         viewModelScope.launch {
             status.value = APIResponseStatus.Loading()
-            handleResponseStatus(authRepository.login(email, password))
+            handleResponseStatus(authRepository.logIn(email, password))
         }
     }
 

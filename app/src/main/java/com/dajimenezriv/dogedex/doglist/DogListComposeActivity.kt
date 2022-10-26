@@ -8,9 +8,11 @@ import androidx.activity.viewModels
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity
 import com.dajimenezriv.dogedex.dogdetail.ui.theme.DogedexTheme
 import com.dajimenezriv.dogedex.models.Dog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DogListComposeActivity : ComponentActivity() {
-    private val viewModel: DogListViewModel by viewModels()
+    // private val viewModel: DogListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,13 +20,10 @@ class DogListComposeActivity : ComponentActivity() {
         setContent {
             DogedexTheme {
                 DogListScreen(
-                    dogList = viewModel.dogs.value,
-                    status = viewModel.status.value,
                     onNavigationIconClick = { finish() },
                     // because both functions accept the same number of params
                     // we can simplify it like this
                     onDogClicked = ::openDogDetailActivity,
-                    onDialogDismiss = { viewModel.resetAPIResponseStatus()}
                 )
             }
         }

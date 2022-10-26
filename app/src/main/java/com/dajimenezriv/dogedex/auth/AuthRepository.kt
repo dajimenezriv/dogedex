@@ -2,15 +2,31 @@ package com.dajimenezriv.dogedex.auth
 
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.api.APIResponseStatus
-import com.dajimenezriv.dogedex.api.DogsAPI
+import com.dajimenezriv.dogedex.api.APIService
 import com.dajimenezriv.dogedex.api.dto.LoginDTO
 import com.dajimenezriv.dogedex.api.dto.SignUpDTO
 import com.dajimenezriv.dogedex.api.dto.UserDTOMapper
 import com.dajimenezriv.dogedex.api.makeNetworkCall
 import java.lang.Exception
+import javax.inject.Inject
 
-class AuthRepository {
+interface AuthRepositoryInterface {
+    suspend fun logIn(
+        email: String,
+        password: String,
+    ): APIResponseStatus<User>
+
     suspend fun signUp(
+        email: String,
+        password: String,
+        confirmPassword: String
+    ): APIResponseStatus<User>
+}
+
+class AuthRepository @Inject constructor(
+    private val apiService: APIService
+) : AuthRepositoryInterface {
+    override suspend fun signUp(
         email: String,
         password: String,
         confirmPassword: String
@@ -21,7 +37,7 @@ class AuthRepository {
             // we send the DTO using retrofit
             // the method signUp is a @POST that sends a @Body
             // that returns a signUpAPIResponse
-            val authAPIResponse = DogsAPI.retrofitService.signUp(signUpDTO)
+            val authAPIResponse = apiService.signUp(signUpDTO)
 
             if (!authAPIResponse.isSuccess) {
                 throw Exception(authAPIResponse.message)
@@ -34,7 +50,7 @@ class AuthRepository {
         }
     }
 
-    suspend fun login(
+    override suspend fun logIn(
         email: String,
         password: String,
     ): APIResponseStatus<User> {
@@ -44,7 +60,7 @@ class AuthRepository {
             // we send the DTO using retrofit
             // the method signUp is a @POST that sends a @Body
             // that returns a signUpAPIResponse
-            val authAPIResponse = DogsAPI.retrofitService.login(loginDTO)
+            val authAPIResponse = apiService.login(loginDTO)
 
             if (!authAPIResponse.isSuccess) {
                 throw Exception(authAPIResponse.message)
