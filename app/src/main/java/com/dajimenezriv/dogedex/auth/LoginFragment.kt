@@ -14,7 +14,7 @@ import kotlin.ClassCastException
 class LoginFragment : Fragment() {
     interface LoginFragmentActions {
         fun onRegisterButtonClick()
-        fun onLoginFieldsValidated(email: String, password: String)
+        fun onLogInFieldsValidated(email: String, password: String)
     }
 
     private lateinit var loginFragmentActions: LoginFragmentActions
@@ -68,6 +68,6 @@ class LoginFragment : Fragment() {
 
         // after we validate the fields, we are going to execute the method onLoginFieldsValidated
         // created on the LoginActivity (must be created because the interface)
-        loginFragmentActions.onLoginFieldsValidated(email, password)
+        loginFragmentActions.onLogInFieldsValidated(email, password)
     }
 }

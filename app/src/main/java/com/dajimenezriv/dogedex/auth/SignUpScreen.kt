@@ -1,6 +1,5 @@
 package com.dajimenezriv.dogedex.auth
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,17 +16,18 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dajimenezriv.dogedex.R
-import com.dajimenezriv.dogedex.api.APIResponseStatus
+import com.dajimenezriv.dogedex.composables.AuthField
 import com.dajimenezriv.dogedex.composables.BackNavigationIcon
 
 @Composable
 fun SignUpScreen(
-    status: APIResponseStatus<Any>? = null,
-    onNavigationIconClick: () -> Unit
+    viewModel: AuthViewModel,
+    onNavigationIconClick: () -> Unit,
+    onSignUpButtonClick: (String, String, String) -> Unit
 ) {
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val confirmPassword = remember { mutableStateOf("") }
+    val email = remember { mutableStateOf("testing@gmail.com") }
+    val password = remember { mutableStateOf("testing") }
+    val confirmPassword = remember { mutableStateOf("testing") }
 
     Scaffold(
         topBar = { SignUpTopBar(onClick = onNavigationIconClick) }
@@ -39,42 +39,45 @@ fun SignUpScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                OutlinedTextField(
-                    label = { Text(stringResource(id = R.string.email)) },
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth(),
+                AuthField(
+                    labelId = R.string.email,
                     value = email.value,
-                    onValueChange = { email.value = it }
+                    onTextChanged = { email.value = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    errorMessageId = viewModel.emailError.value
                 )
 
-                OutlinedTextField(
-                    label = { Text(stringResource(id = R.string.password)) },
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                AuthField(
+                    labelId = R.string.password,
                     value = password.value,
-                    onValueChange = { password.value = it },
-                    visualTransformation = PasswordVisualTransformation()
+                    onTextChanged = { password.value = it },
+                    visualTransformation = PasswordVisualTransformation(),
+                    errorMessageId = viewModel.passwordError.value
                 )
 
-                OutlinedTextField(
-                    label = { Text(stringResource(id = R.string.confirm_password)) },
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                AuthField(
+                    labelId = R.string.confirm_password,
                     value = confirmPassword.value,
-                    onValueChange = { confirmPassword.value = it },
-                    visualTransformation = PasswordVisualTransformation()
+                    onTextChanged = { confirmPassword.value = it },
+                    visualTransformation = PasswordVisualTransformation(),
+                    errorMessageId = viewModel.confirmPasswordError.value
                 )
 
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp),
-                    onClick = {}
+                    onClick = {
+                        onSignUpButtonClick(
+                            email.value,
+                            password.value,
+                            confirmPassword.value
+                        )
+                    }
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = stringResource(id = R.string.register),
+                        text = stringResource(id = R.string.sign_up),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Medium
                     )

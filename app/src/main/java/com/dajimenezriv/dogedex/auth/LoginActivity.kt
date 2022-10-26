@@ -23,21 +23,20 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
         val binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val loadingWheel = binding.loadingWheel
-
+        /*
         viewModel.status.observe(this) { status ->
             when (status) {
                 is APIResponseStatus.Error -> {
-                    loadingWheel.visibility = View.GONE
+                    binding.loadingWheel.visibility = View.GONE
                     showErrorDialog(status.messageId)
                 }
                 is APIResponseStatus.Loading -> {
                     // show progress bar
-                    loadingWheel.visibility = View.VISIBLE
+                    binding.loadingWheel.visibility = View.VISIBLE
                 }
                 is APIResponseStatus.Success -> {
                     // hide progress bar
-                    loadingWheel.visibility = View.GONE
+                    binging.loadingWheel.visibility = View.GONE
                 }
             }
         }
@@ -51,6 +50,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
                 finish()
             }
         }
+        */
     }
 
     private fun showErrorDialog(messageId: Int) {
@@ -67,8 +67,8 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
             .navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
     }
 
-    override fun onLoginFieldsValidated(email: String, password: String) {
-        viewModel.login(email, password);
+    override fun onLogInFieldsValidated(email: String, password: String) {
+        viewModel.logIn(email, password);
     }
 
     override fun onSignUpFieldsValidated(email: String, password: String, confirmPassword: String) {

@@ -17,46 +17,46 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dajimenezriv.dogedex.R
-import com.dajimenezriv.dogedex.api.APIResponseStatus
+import com.dajimenezriv.dogedex.composables.AuthField
 
 @Composable
-fun LoginScreen(status: APIResponseStatus<Any>? = null, onRegisterButtonClick: () -> Unit) {
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+fun LoginScreen(
+    viewModel: AuthViewModel,
+    onLogInButtonClick: (String, String) -> Unit,
+    onSignUpButtonClick: () -> Unit
+) {
+    val email = remember { mutableStateOf("testing@gmail.com") }
+    val password = remember { mutableStateOf("testing") }
 
     Scaffold(
         topBar = { LoginTopBar() }
-    ) {
-        Surface(modifier = Modifier.padding(it)) {
+    ) { paddingValues ->
+        Surface(modifier = Modifier.padding(paddingValues)) {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                OutlinedTextField(
-                    label = { Text(stringResource(id = R.string.email)) },
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth(),
+                AuthField(
+                    labelId = R.string.email,
                     value = email.value,
-                    onValueChange = { email.value = it }
+                    onTextChanged = { email.value = it },
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
-                OutlinedTextField(
-                    label = { Text(stringResource(id = R.string.password)) },
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                AuthField(
+                    labelId = R.string.password,
                     value = password.value,
-                    onValueChange = { password.value = it },
-                    visualTransformation = PasswordVisualTransformation()
+                    onTextChanged = { password.value = it },
+                    visualTransformation = PasswordVisualTransformation(),
                 )
 
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp),
-                    onClick = {}
+                    onClick = { onLogInButtonClick(email.value, password.value) }
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
@@ -68,9 +68,9 @@ fun LoginScreen(status: APIResponseStatus<Any>? = null, onRegisterButtonClick: (
 
                 Text(
                     modifier = Modifier
-                        .clickable(enabled = true, onClick = { onRegisterButtonClick() })
+                        .clickable(enabled = true, onClick = { onSignUpButtonClick() })
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(12.dp),
                     text = stringResource(id = R.string.sign_up),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium
