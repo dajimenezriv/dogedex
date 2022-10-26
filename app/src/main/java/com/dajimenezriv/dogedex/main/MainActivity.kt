@@ -122,14 +122,6 @@ class MainActivity : AppCompatActivity() {
         requestCameraPermissions()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.setupClassifier(
-            FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
-            FileUtil.loadLabels(this@MainActivity, LABELS_PATH)
-        )
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         if (::cameraExecutor.isInitialized) cameraExecutor.shutdown()

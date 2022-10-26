@@ -18,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dogRepository: DogRepositoryInterface
+    private val dogRepository: DogRepositoryInterface,
+    private val classifierRepository: ClassifierRepositoryInterface
 ): ViewModel() {
     private val _dog = MutableLiveData<Dog>()
     val dog: LiveData<Dog> get() = _dog
@@ -28,13 +29,6 @@ class MainViewModel @Inject constructor(
 
     private val _dogRecognition = MutableLiveData<DogRecognition>()
     val dogRecognition: LiveData<DogRecognition> get() = _dogRecognition
-
-    private lateinit var classifierRepository: ClassifierRepository
-
-    fun setupClassifier(tfLiteModel: MappedByteBuffer, labels: List<String>) {
-        val classifier = Classifier(tfLiteModel, labels)
-        classifierRepository = ClassifierRepository(classifier)
-    }
 
     fun recognizeImage(imageProxy: ImageProxy) {
         viewModelScope.launch {
