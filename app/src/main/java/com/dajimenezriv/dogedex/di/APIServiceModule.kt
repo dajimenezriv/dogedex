@@ -22,6 +22,7 @@ object APIServiceModule {
     fun provideRetrofit(okHttpClient: OkHttpClient) = Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(BASE_URL)
+        // parse json in an object that we can use
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 

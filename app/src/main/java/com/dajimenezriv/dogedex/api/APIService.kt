@@ -1,6 +1,5 @@
 package com.dajimenezriv.dogedex.api
 
-import com.dajimenezriv.dogedex.BASE_URL
 import com.dajimenezriv.dogedex.api.dto.AddDogToUserDTO
 import com.dajimenezriv.dogedex.api.dto.LoginDTO
 import com.dajimenezriv.dogedex.api.dto.SignUpDTO
@@ -10,21 +9,9 @@ import com.dajimenezriv.dogedex.api.responses.DefaultResponse
 import com.dajimenezriv.dogedex.api.responses.DogAPIResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-// parse json in an object that we can use
+
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
-
-private val okHttpClient = OkHttpClient
-    .Builder()
-    .addInterceptor(APIServiceInterceptor)
-    .build()
-
-// all requests are going to go through our interceptor
-private val retrofit = Retrofit.Builder()
-    .client(okHttpClient)
-    .baseUrl(BASE_URL)
-    .addConverterFactory(MoshiConverterFactory.create())
-    .build()
 
 interface APIService {
     /*
@@ -58,12 +45,4 @@ interface APIService {
 
     @GET("find_dog_by_ml_id")
     suspend fun getDogMyMlId(@Query("ml_id") mlId: String): DogAPIResponse
-}
-
-// this is the way with retrofit
-object DogsAPI {
-    // lazy is to tell the app, don't create this until we call it the first time
-    val retrofitService: APIService by lazy {
-        retrofit.create(APIService::class.java)
-    }
 }
