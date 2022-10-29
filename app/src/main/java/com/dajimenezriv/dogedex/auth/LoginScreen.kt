@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -55,7 +57,8 @@ fun LoginScreen(
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),
+                        .padding(top = 16.dp)
+                        .semantics { testTag = "logInButton" },
                     onClick = { onLogInButtonClick(email.value, password.value) }
                 ) {
                     Text(
@@ -70,7 +73,8 @@ fun LoginScreen(
                     modifier = Modifier
                         .clickable(enabled = true, onClick = { onSignUpButtonClick() })
                         .fillMaxWidth()
-                        .padding(12.dp),
+                        .padding(12.dp)
+                        .semantics { testTag = "signUpButton" },
                     text = stringResource(id = R.string.sign_up),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium
