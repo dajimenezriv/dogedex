@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
@@ -18,6 +20,8 @@ fun AuthField(
     value: String,
     onTextChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
+    inputTag: String = "",
+    errorTag: String = "",
     errorMessageId: Int? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
@@ -28,14 +32,15 @@ fun AuthField(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(top = 8.dp)
+                    .semantics { testTag = errorTag },
                 text = stringResource(id = errorMessageId),
                 color = Color.Red
             )
         }
 
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().semantics { testTag = inputTag },
             label = { Text(text = stringResource(id = labelId)) },
             value = value,
             onValueChange = { onTextChanged(it) },

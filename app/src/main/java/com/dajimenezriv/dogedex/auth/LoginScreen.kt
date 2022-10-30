@@ -27,8 +27,8 @@ fun LoginScreen(
     onLogInButtonClick: (String, String) -> Unit,
     onSignUpButtonClick: () -> Unit
 ) {
-    val email = remember { mutableStateOf("testing@gmail.com") }
-    val password = remember { mutableStateOf("testing") }
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
 
     Scaffold(
         topBar = { LoginTopBar() }
@@ -45,6 +45,7 @@ fun LoginScreen(
                     value = email.value,
                     onTextChanged = { email.value = it },
                     modifier = Modifier.fillMaxWidth(),
+                    inputTag = "emailInput"
                 )
 
                 AuthField(
@@ -52,6 +53,7 @@ fun LoginScreen(
                     value = password.value,
                     onTextChanged = { password.value = it },
                     visualTransformation = PasswordVisualTransformation(),
+                    inputTag = "passwordInput"
                 )
 
                 Button(
