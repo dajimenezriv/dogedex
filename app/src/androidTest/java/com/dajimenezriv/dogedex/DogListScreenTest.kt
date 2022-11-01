@@ -7,6 +7,7 @@ import com.dajimenezriv.dogedex.doglist.DogListScreen
 import com.dajimenezriv.dogedex.doglist.DogListViewModel
 import com.dajimenezriv.dogedex.doglist.DogRepositoryInterface
 import com.dajimenezriv.dogedex.models.Dog
+import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 import org.junit.Test
 
@@ -26,6 +27,10 @@ class DogListScreenTest {
             }
 
             override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> {
                 TODO("Not yet implemented")
             }
         }
@@ -57,6 +62,10 @@ class DogListScreenTest {
             }
 
             override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> {
                 TODO("Not yet implemented")
             }
 
@@ -121,6 +130,10 @@ class DogListScreenTest {
             }
 
             override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
+                TODO("Not yet implemented")
+            }
+
+            override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> {
                 TODO("Not yet implemented")
             }
         }
