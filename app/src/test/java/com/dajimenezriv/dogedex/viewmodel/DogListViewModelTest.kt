@@ -4,6 +4,7 @@ import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.doglist.DogListViewModel
 import com.dajimenezriv.dogedex.doglist.DogRepositoryInterface
 import com.dajimenezriv.dogedex.models.Dog
+import kotlinx.coroutines.flow.Flow
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -72,6 +73,10 @@ class DogListViewModelTest {
                     ),
                 )
             }
+
+            override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> {
+                TODO("Not yet implemented")
+            }
         }
 
         val viewModel = DogListViewModel(
@@ -110,6 +115,10 @@ class DogListViewModelTest {
                         false,
                     ),
                 )
+            }
+
+            override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> {
+                TODO("Not yet implemented")
             }
         }
 

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +27,7 @@ import com.dajimenezriv.dogedex.databinding.ActivityMainBinding
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.DOG_KEY
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.IS_RECOGNITION_KEY
 import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity
+import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.PROBABLE_DOGS_IDS
 import com.dajimenezriv.dogedex.doglist.DogListComposeActivity
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
@@ -101,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             if (dog != null) {
                 val intent = Intent(this, DogDetailComposeActivity::class.java)
                 intent.putExtra(DOG_KEY, dog)
+                intent.putExtra(PROBABLE_DOGS_IDS, ArrayList<String>(viewModel.probableDogIds))
                 intent.putExtra(IS_RECOGNITION_KEY, true)
                 startActivity(intent)
             }

@@ -39,8 +39,8 @@ class DogDetailActivity : AppCompatActivity() {
         binding.dogImage.load(dog.imageUrl)
         binding.closeButton.setOnClickListener {
             // we want to add the dog only if we have reach this activity by the take picture in ml
-            if (isRecognition) viewModel.addDogToUser(dog.id)
-            else finish()
+            // if (isRecognition) viewModel.addDogToUser(dog.id)
+            // else finish()
         }
 
         /*

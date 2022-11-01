@@ -1,5 +1,6 @@
 package com.dajimenezriv.dogedex.doglist
 
+import android.util.Log
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.models.Dog
 import com.dajimenezriv.dogedex.api.APIResponseStatus
@@ -10,6 +11,9 @@ import com.dajimenezriv.dogedex.api.makeNetworkCall
 import com.dajimenezriv.dogedex.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import javax.inject.Inject
@@ -18,6 +22,7 @@ interface DogRepositoryInterface {
     suspend fun getDogCollection(): APIResponseStatus<List<Dog>>
     suspend fun addDogToUser(dogId: Long): APIResponseStatus<Any>
     suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog>
+    suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>>
 }
 
 class DogRepository @Inject constructor(
@@ -71,7 +76,7 @@ class DogRepository @Inject constructor(
         }
     }.sorted()
 
-    suspend fun downloadDogs(): APIResponseStatus<List<Dog>> {
+    private suspend fun downloadDogs(): APIResponseStatus<List<Dog>> {
         return makeNetworkCall {
             val dogListAPIResponse = apiService.getAllDogs()
             val dogDTOList = dogListAPIResponse.data.dogs
@@ -80,7 +85,7 @@ class DogRepository @Inject constructor(
         }
     }
 
-    suspend fun getUserDogs(): APIResponseStatus<List<Dog>> {
+    private suspend fun getUserDogs(): APIResponseStatus<List<Dog>> {
         return makeNetworkCall {
             val dogListAPIResponse = apiService.getUserDogs()
             val dogDTOList = dogListAPIResponse.data.dogs
@@ -109,4 +114,15 @@ class DogRepository @Inject constructor(
             dogDTOMapper.fromDogDTOtoDogDomain(response.data.dog)
         }
     }
+
+    // flow producer
+    // it's executed when in the screen, we click the button "It's not my dog"
+    override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> =
+        // doesn't work in parallel
+        flow {
+            for (mlDogId in probableDogsIds) {
+                val dog = getDogByMlId(mlDogId)
+                emit(dog)
+            }
+        }.flowOn(dispatcher)
 }

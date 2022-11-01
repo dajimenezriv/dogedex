@@ -21,6 +21,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.Flow
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
@@ -77,6 +78,10 @@ class MainActivityTest {
         override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
             TODO("Not yet implemented")
         }
+
+        override suspend fun getProbableDogs(probableDogsIds: ArrayList<String>): Flow<APIResponseStatus<Dog>> {
+            TODO("Not yet implemented")
+        }
     }
 
     @Module
@@ -90,7 +95,7 @@ class MainActivityTest {
     }
 
     class FakeClassifierRepository @Inject constructor() : ClassifierRepositoryInterface {
-        override suspend fun recognizeImage(imageProxy: ImageProxy): DogRecognition {
+        override suspend fun recognizeImage(imageProxy: ImageProxy): List<DogRecognition> {
             TODO("Not yet implemented")
         }
     }

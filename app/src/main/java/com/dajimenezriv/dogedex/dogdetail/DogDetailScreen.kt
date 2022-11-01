@@ -9,6 +9,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,10 +20,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.composables.ErrorDialog
@@ -29,11 +32,20 @@ import com.dajimenezriv.dogedex.models.Dog
 
 @Composable
 fun DogDetailScreen(
-    dog: Dog,
-    status: APIResponseStatus<Any>? = null,
-    onFloatButtonClick: () -> Unit,
-    onDialogDismiss: () -> Unit
+    finishActivity: () -> Unit,
+    viewModel: DogDetailViewModel = hiltViewModel()
 ) {
+    val probableDogsDialogEnabled = remember { mutableStateOf(false) }
+    val status = viewModel.status.value
+    val dog = viewModel.dog.value!!
+    val isRecognition = viewModel.isRecognition.value ?: false
+    // transform flow state to state
+    val probableDogList = viewModel.probableDogList.collectAsState().value
+
+    // when we add a dog to our collection (when we execute the bottom onClick function)
+    // after the viewModel saves the dog, the viewModel status changes to Success
+    if (status is APIResponseStatus.Success) finishActivity()
+
     // it`s like a frame layout
     Box(
         modifier = Modifier
@@ -42,19 +54,25 @@ fun DogDetailScreen(
             .padding(start = 8.dp, end = 8.dp, bottom = 16.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        DogInformation(dog)
+        DogInformation(dog = dog, isRecognition = isRecognition) {
+            viewModel.getProbableDogs()
+            probableDogsDialogEnabled.value = true
+        }
         Image(
             modifier = Modifier
                 .width(270.dp)
                 .padding(top = 80.dp),
-            painter = rememberImagePainter(dog.imageUrl),
+            painter = rememberAsyncImagePainter(dog.imageUrl),
             contentDescription = dog.name
         )
         FloatingActionButton(
             modifier = Modifier
                 .align(alignment = Alignment.BottomCenter)
                 .padding(bottom = 20.dp),
-            onClick = onFloatButtonClick
+            onClick = {
+                if (isRecognition) viewModel.addDogToUser()
+                else finishActivity()
+            }
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = null)
         }
@@ -63,14 +81,22 @@ fun DogDetailScreen(
         else if (status is APIResponseStatus.Error) {
             ErrorDialog(
                 messageId = status.messageId,
-                onDialogDismiss = onDialogDismiss
+                onDialogDismiss = { viewModel.resetAPIResponseStatus() }
+            )
+        }
+
+        if (probableDogsDialogEnabled.value) {
+            ProbableDogsDialog(
+                probableDogs = probableDogList,
+                onDismiss = { probableDogsDialogEnabled.value = false },
+                onItemClicked = { viewModel.updateDog(it) }
             )
         }
     }
 }
 
 @Composable
-fun DogInformation(dog: Dog) {
+fun DogInformation(dog: Dog, isRecognition: Boolean, onProbableDogsButtonClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -124,6 +150,19 @@ fun DogInformation(dog: Dog) {
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Medium
                 )
+
+                if (isRecognition) {
+                    Button(
+                        modifier = Modifier.padding(16.dp),
+                        onClick = { onProbableDogsButtonClick() }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.not_your_dog),
+                            textAlign = TextAlign.Center,
+                            fontSize = 18.sp
+                        )
+                    }
+                }
 
                 Divider(
                     modifier = Modifier.padding(
@@ -283,24 +322,4 @@ private fun LiveIcon() {
 
         }
     }
-}
-
-@Preview
-@Composable
-fun DogDetailScreenPreview() {
-    val dog = Dog(
-        1L,
-        78,
-        "PUG",
-        "Herding",
-        "70",
-        "75",
-        "",
-        "10-12",
-        "Friendly, playful",
-        "5",
-        "6",
-    )
-
-    DogDetailScreen(dog, onFloatButtonClick = { }, onDialogDismiss = {})
 }

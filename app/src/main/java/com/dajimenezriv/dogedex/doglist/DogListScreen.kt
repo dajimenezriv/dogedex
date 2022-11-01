@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.dajimenezriv.dogedex.R
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.composables.BackNavigationIcon
@@ -87,7 +87,7 @@ fun DogGridItem(dog: Dog, onDogClicked: (Dog) -> Unit) {
             shape = RoundedCornerShape(4.dp)
         ) {
             Image(
-                painter = rememberImagePainter(data = dog.imageUrl),
+                painter = rememberAsyncImagePainter(model = dog.imageUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .background(Color.White)

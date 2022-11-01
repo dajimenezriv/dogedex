@@ -41,4 +41,7 @@
     <string name="title_activity_dog_list_compose">DogListComposeActivity</string>
     <string name="top_bar_title">My dog collection</string>
     <string name="title_activity_login_compose">LoginComposeActivity</string>
+    <string name="not_your_dog">Not your dog? Tap to see other probable dogs</string>
+    <string name="other_probable_dogs">Other probable dogs</string>
+    <string name="dismiss">My dog is not here</string>
 </resources>
