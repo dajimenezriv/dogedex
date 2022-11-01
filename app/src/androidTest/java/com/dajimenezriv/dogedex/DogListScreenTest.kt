@@ -28,7 +28,6 @@ class DogListScreenTest {
             override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
                 TODO("Not yet implemented")
             }
-
         }
 
         val viewModel = DogListViewModel(
@@ -124,7 +123,6 @@ class DogListScreenTest {
             override suspend fun getDogByMlId(mlDogId: String): APIResponseStatus<Dog> {
                 TODO("Not yet implemented")
             }
-
         }
 
         val viewModel = DogListViewModel(
