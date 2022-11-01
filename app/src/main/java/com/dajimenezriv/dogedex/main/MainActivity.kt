@@ -31,6 +31,7 @@ import com.dajimenezriv.dogedex.dogdetail.DogDetailComposeActivity.Companion.PRO
 import com.dajimenezriv.dogedex.doglist.DogListComposeActivity
 import com.dajimenezriv.dogedex.models.User
 import com.dajimenezriv.dogedex.settings.SettingsActivity
+import com.dajimenezriv.dogedex.testutils.EspressoIdlingResource
 import dagger.hilt.android.AndroidEntryPoint
 import org.tensorflow.lite.support.common.FileUtil
 import java.io.File
@@ -178,6 +179,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
+        // for testing
+        EspressoIdlingResource.increment()
         cameraProviderFuture.addListener({
             val preview = Preview.Builder().build()
             preview.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
@@ -188,6 +192,7 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
+                EspressoIdlingResource.decrement()
                 viewModel.recognizeImage(imageProxy)
                 // we can't close the imageProxy here because it's running inside a coroutine
                 // imageProxy.close()
