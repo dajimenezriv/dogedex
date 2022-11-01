@@ -37,7 +37,7 @@ class LoginActivityTest {
     class FakeAuthRepository @Inject constructor() : AuthRepositoryInterface {
         override suspend fun logIn(email: String, password: String): APIResponseStatus<User> {
             return APIResponseStatus.Success(
-                User(1, "testing@mail.com", "token")
+                User(1L, "testing@mail.com", "token")
             )
         }
 
@@ -64,7 +64,7 @@ class LoginActivityTest {
         val context = composeTestRule.activity
 
         // jetpack compose
-        composeTestRule.onNodeWithTag(testTag = "logInButton").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "logInButton").assertIsDisplayed()
         composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "emailInput")
             .performTextInput("testing@gmail.com")
         composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "passwordInput")
