@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.dajimenezriv.dogedex.api.APIResponseStatus
 import com.dajimenezriv.dogedex.auth.AuthRepositoryInterface
-import com.dajimenezriv.dogedex.auth.LoginActivity
+import com.dajimenezriv.dogedex.auth.LoginComposeActivity
 import com.dajimenezriv.dogedex.di.AuthRepositoryModule
 import com.dajimenezriv.dogedex.models.User
 import dagger.Binds
@@ -32,7 +32,7 @@ class LoginActivityTest {
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    var composeTestRule = createAndroidComposeRule<LoginActivity>()
+    var composeTestRule = createAndroidComposeRule<LoginComposeActivity>()
 
     class FakeAuthRepository @Inject constructor() : AuthRepositoryInterface {
         override suspend fun logIn(email: String, password: String): APIResponseStatus<User> {
@@ -65,11 +65,11 @@ class LoginActivityTest {
 
         // jetpack compose
         composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "logInButton").assertIsDisplayed()
-        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "emailInput")
-            .performTextInput("testing@gmail.com")
-        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "passwordInput")
-            .performTextInput("testing")
-        composeTestRule.onNodeWithTag(testTag = "loginButton").performClick()
+        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "emailInput").performTextClearance()
+        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "emailInput").performTextInput("testing@gmail.com")
+        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "passwordInput").performTextClearance()
+        composeTestRule.onNodeWithTag(useUnmergedTree = true, testTag = "passwordInput").performTextInput("testing")
+        composeTestRule.onNodeWithTag(testTag = "logInButton").performClick()
 
         // espresso
         onView(withId(R.id.take_photo_fab)).check(matches(isDisplayed()))
